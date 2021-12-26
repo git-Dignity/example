@@ -1,0 +1,71 @@
+<!--
+ * @Author: zemin zheng
+ * @Date: 2021-12-26 16:49:59
+ * @LastEditTime: 2021-12-26 17:03:16
+ * @LastEditors: Please set LastEditors
+ * @Description: 利用win.open在本窗口，弹出一个窗口；如果此时已经打开过一次，缩小，再次点击按钮的时候，win.focus聚焦，不需要重新加载弹框
+ * @Description: 窗口关闭的时候，再次打开窗口，才需重新加载
+ * @FilePath: \gd-ywtgd:\dev\github\example\javascript\winOpen.html
+-->
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <button id="btn">打开</button>
+    <script>
+        let show = true, win =  null, timer = null;
+
+        document.getElementById('btn').addEventListener('click', btnClick)
+
+        function btnClick() {
+            if (show) {
+                setTimer();
+            } else {
+                closeTimer();
+            }
+        }
+
+        function showUrl() {
+            let o = {
+                name: '',
+                url: 'http://zhengzemin.cn/',
+            };
+            if (win) {
+                win.close();
+            }
+            let bl = window.screen.height / 1080;
+            let width = Math.ceil(2710 * bl);
+            let height = Math.ceil(890 * bl) - 50;
+            let top = Math.ceil(102 * bl);
+            let left = Math.ceil((window.screen.width - width) / 2);
+            win = window.open(
+                o.url,
+                o.name,
+                `width=${width},height=${height},top=${top},left=${left},resizable=no,location=no,menubar=no,status=no,toolbar=no,titlebar=no`
+            );
+        }
+
+        function  setTimer() {
+            if (!win || win.closed) {
+                showUrl();
+            }
+            if (show) {
+                win.focus();
+            }
+        }
+
+        function closeTimer() {
+            if (win) {
+                win.close();
+            }
+        }
+    </script>
+  </body>
+</html>
